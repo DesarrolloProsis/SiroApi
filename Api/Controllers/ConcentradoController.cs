@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.Clases;
 using Api.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -18,21 +19,19 @@ namespace Api.Controllers
     public class ConcentradoController : ControllerBase
     {
         Context db = new Context();
+        PlazasMetodos PlazaMetodos = new PlazasMetodos();
+        TramosMetodos TramoMetodos = new TramosMetodos();
+        ConcentradoMetodos ConcentradoMetodos = new ConcentradoMetodos();
+        
+        
 
 
         [Route("Plaza")]
         [HttpGet]
-        public JsonResult GetPlazaCruces()
+        public JsonResult GetTodasPlazaCruces()
         {
 
-            var Plazas = (from c in db.Plazas
-                          select new
-                          {
-                              NumeroPlaza = c.NumeroPlazaCapufe,
-                              NombrePlaza = c.NombrePlaza,
-
-                          }).ToList();
-
+            var Plazas = PlazaMetodos.GetPlazasyNumeros();
 
 
             List<PlazaCruce> Lista = new List<PlazaCruce>();
@@ -40,12 +39,11 @@ namespace Api.Controllers
             foreach (var item in Plazas)
             {
                 int Cruces = 0;
-                var Tramos = db.Tramos.Where(x => x.NumeroPlazaCapufe == item.NumeroPlaza).ToList();
+                var Tramos = TramoMetodos.GetTramos(item.NumeroPlaza);                
 
                 foreach (var item2 in Tramos)
                 {
-
-                    Cruces += db.ConcentradoTransacciones.Where(x => x.IdGare == item2.IdGare).Count();
+                    Cruces += ConcentradoMetodos.GetPlazaCruces(item2.IdGare);                    
 
                 }
 
@@ -65,16 +63,18 @@ namespace Api.Controllers
         public JsonResult GetPlazaCruces(string NumeroPlaza)
         {
 
-            var Tramos = (from c in db.Plazas
-                          join p in db.Tramos on c.NumeroPlazaCapufe equals p.NumeroPlazaCapufe
-                          where c.NumeroPlazaCapufe == NumeroPlaza
-                          select new
-                          {
+            //var Tramos = (from c in db.Plazas
+            //              join p in db.Tramos on c.NumeroPlazaCapufe equals p.NumeroPlazaCapufe
+            //              where c.NumeroPlazaCapufe == NumeroPlaza
+            //              select new
+            //              {
 
-                              NombrePlaza = c.NombrePlaza,
-                              IdGare = p.IdGare,
-                          }
-                        ).ToList();
+            //                  NombrePlaza = c.NombrePlaza,
+            //                  IdGare = p.IdGare,
+            //              }
+            //            ).ToList();
+
+            var Tramos = TramoMetodos.GetTramosyPlazas(NumeroPlaza);
 
 
             List<PlazaCruce> Lista = new List<PlazaCruce>();
@@ -86,7 +86,8 @@ namespace Api.Controllers
             {
 
                 NombrePlaza = item.NombrePlaza;
-                Cruces += db.ConcentradoTransacciones.Where(x => x.IdGare == item.IdGare).Count();
+                Cruces += ConcentradoMetodos.GetPlazaCruces(item.IdGare);
+                //Cruces += db.ConcentradoTransacciones.Where(x => x.IdGare == item.IdGare).Count();
 
             }
 
@@ -106,19 +107,11 @@ namespace Api.Controllers
         [HttpGet]
         public JsonResult GetPlazaTramoCrucesFecha(string fechaInicio, string fechaFin)
         {
-            var dsgsdfg = fechaInicio;
+
             DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
             DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
 
-            var Plazas = (from c in db.Plazas
-                          select new
-                          {
-
-                              NombrePlaza = c.NombrePlaza,
-                              NumeroCapufe = c.NumeroPlazaCapufe,
-                          }
-                      ).ToList();
-
+            var Plazas = PlazaMetodos.GetPlazasyNumeros();
 
             List<TramoCruce> Lista = new List<TramoCruce>();
             string NombrePlaza = string.Empty;
@@ -126,19 +119,16 @@ namespace Api.Controllers
             int[] Cuerpos = new int[4];
 
 
-
             foreach (var item in Plazas)
             {
-
-                var Tramos = db.Tramos.Where(x => x.NumeroPlazaCapufe == item.NumeroCapufe).ToList();
+                var Tramos = TramoMetodos.GetTramos(item.NumeroPlaza);                
 
                 for (int i = 0; i < Tramos.Count; i++)
                 {
-                    if(FechaInicio == FechaFin)
-                        Cuerpos[i] = db.ConcentradoTransacciones.Where(x => x.IdGare == Tramos[i].IdGare && x.Fecha == FechaInicio).Count();
+                    if (FechaInicio == FechaFin)
+                        Cuerpos[i] = ConcentradoMetodos.GetPlazaCruces(Tramos[i].IdGare, FechaFin);                    
                     else
-                        Cuerpos[i] = db.ConcentradoTransacciones.Where(x => x.IdGare == Tramos[i].IdGare && x.Fecha >= FechaInicio && x.Fecha <= FechaFin).Count();
-
+                        Cuerpos[i] = ConcentradoMetodos.GetPlazaCruces(Tramos[i].IdGare, FechaInicio, FechaFin);
                 }
 
                 int CuerpoA = Cuerpos[0];
@@ -158,8 +148,113 @@ namespace Api.Controllers
 
             }
 
-
             return new JsonResult(Lista);
+        }
+
+        [Route("TiposPago/{plaza}/{fechaInicio}/{fechaFin}")]        
+        [HttpGet]
+        public JsonResult GetCrucesTipoPagoFecha(string Plaza, string fechaInicio, string fechaFin)
+        {
+
+            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+
+
+            //var Tramos = (from p in db.Plazas
+            //              join t in db.Tramos
+            //              on p.NumeroPlazaCapufe equals t.NumeroPlazaCapufe
+            //              where p.NombrePlaza == "Libramiento"
+            //              select new
+            //              {
+            //                  idGare = t.IdGare,
+            //                  nombreTramo = t.NombreTramo
+
+            //              }).ToList();
+
+            var Tramos = TramoMetodos.GetTramos(Plaza);
+
+            object json = new object();
+
+            List<Transacciones> Transaciones = new List<Transacciones>();
+
+            if (FechaFin == FechaInicio)
+            {
+                foreach (var item in Tramos)
+                {
+                    //var List = (from t in db.ConcentradoTransacciones
+                    //            where t.Fecha == FechaInicio
+                    //            where t.IdGare == item.IdGare
+                    //            select new
+                    //            {
+                    //                Fecha = t.Fecha,
+                    //                TipoPago = t.TipoPagoId,
+                    //                TipoVehiculo = t.TipoVehiculoId,
+                    //                IdTuno = t.TurnoId
+
+                    //            }).ToList();
+
+                    var List = ConcentradoMetodos.GetConcentradoType(item.IdGare, FechaInicio);
+
+                    foreach (var item2 in List)
+                    {
+
+                        Transaciones.Add(new Transacciones
+                        {
+                            Fecha = item2.Fecha,
+                            TipoPago = item2.TipoPago,
+                            TipoVehiculo = item2.TipoVehiculo,
+                            IdTuno = item2.IdTurno
+
+                        });
+                    }
+                }
+
+
+
+
+                List<CrucesTypePago> ListTipoPago = new List<CrucesTypePago>();
+                var TipoPago = db.TipoPago.ToList();
+
+                foreach (var item in TipoPago)
+                {
+                    var CantidadLinq = Transaciones.Where(x => x.TipoPago == item.TipoPagoId).Count();
+
+                    if (CantidadLinq > 0)
+                    {
+                        ListTipoPago.Add(new CrucesTypePago
+                        {
+                            Pago = item.NombrePago,
+                            Cantidad = CantidadLinq
+
+                        });
+                    }
+
+                }
+
+                List<CrucesTypeVehiculo> ListTipoVehiculo = new List<CrucesTypeVehiculo>();
+                var TipoVehiculo = db.TipoVehiculo.ToList();
+
+                foreach (var item in TipoVehiculo)
+                {
+                    var CantidadLinq = Transaciones.Where(x => x.TipoVehiculo == item.TipoVehiculoId).Count();
+
+                    if (CantidadLinq > 0)
+                    {
+                        ListTipoVehiculo.Add(new CrucesTypeVehiculo
+                        {
+                            Vehiculo = item.ClaveVehiculo,
+                            Cantidad = CantidadLinq
+
+                        });
+                    }
+                }
+
+                json = new { ListTipoPago, ListTipoVehiculo };
+               
+            }
+
+            return new JsonResult(json);
+
         }
 
 
@@ -217,8 +312,8 @@ namespace Api.Controllers
 
 
             }
-     
-            object json = new { Lista, TurnosNombre};
+
+            object json = new { Lista, TurnosNombre };
 
 
             return new JsonResult(json);
@@ -248,6 +343,27 @@ namespace Api.Controllers
             public int TurnoNocturno { get; set; }
 
         }
+
+        private class Transacciones
+        {
+            public DateTime Fecha { get; set; }
+            public int TipoPago { get; set; }
+            public int TipoVehiculo { get; set; }
+            public int IdTuno { get; set; }
+        }
+
+        private class CrucesTypePago
+        {
+            public string Pago { get; set; }
+            public int Cantidad { get; set; }
+        }
+        private class CrucesTypeVehiculo
+        {
+         
+            public string Vehiculo { get; set; }
+            public int Cantidad { get; set; }
+        }
+
 
     }
 }

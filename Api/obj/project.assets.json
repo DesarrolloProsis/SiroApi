@@ -12568,11 +12568,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Desarrollo3\\Desktop\\ApiSiro\\ApiSiro\\Api\\Api.csproj",
+      "projectUniqueName": "C:\\Users\\Desarrollo3\\Desktop\\ApiSiro\\ApiSiro\\SiroApi\\Api\\Api.csproj",
       "projectName": "Api",
-      "projectPath": "C:\\Users\\Desarrollo3\\Desktop\\ApiSiro\\ApiSiro\\Api\\Api.csproj",
+      "projectPath": "C:\\Users\\Desarrollo3\\Desktop\\ApiSiro\\ApiSiro\\SiroApi\\Api\\Api.csproj",
       "packagesPath": "C:\\Users\\Desarrollo3\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Desarrollo3\\Desktop\\ApiSiro\\ApiSiro\\Api\\obj\\",
+      "outputPath": "C:\\Users\\Desarrollo3\\Desktop\\ApiSiro\\ApiSiro\\SiroApi\\Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
