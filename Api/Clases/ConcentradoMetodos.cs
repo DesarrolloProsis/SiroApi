@@ -9,18 +9,32 @@ namespace Api.Clases
     class ConcentradoMetodos
     {
         Context db = new Context();
+
+        ///<summary>
+        /// Obtine el Total(count) de Concentrado/Transacciones por IdGare
+        /// </summary>
         public int GetPlazaCruces(int idgare)
         {
             return db.ConcentradoTransacciones.Where(x => x.IdGare == idgare).Count();
         }
+        ///<summary>
+        /// Obtine el Total(count) de Concentrado/Transacciones por IdGare y Fecha
+        /// </summary>
         public int GetPlazaCruces(int idgare, DateTime fechaInicio)
         {
             return db.ConcentradoTransacciones.Where(x => x.IdGare == idgare && x.Fecha == fechaInicio).Count(); ;
         }
+        ///<summary>
+        /// Obtine el Total(count) de Concentrado/Transacciones por IdGare y Fechas
+        /// </summary>
         public int GetPlazaCruces(int idgare, DateTime fechaInicio, DateTime fechaFin)
         {
             return db.ConcentradoTransacciones.Where(x => x.IdGare == idgare && x.Fecha >= fechaInicio && x.Fecha <= fechaFin).Count(); ;
         }
+        ///<summary>
+        /// Obtine una lista de Concentrado/Transacciones
+        /// Que contiene typePago/typeVehiculo
+        /// </summary>
         public List<ConcentradoType> GetConcentradoType(int idgare, DateTime fechaInicio)
         {
             var Concentrado = (from t in db.ConcentradoTransacciones

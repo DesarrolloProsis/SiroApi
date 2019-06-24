@@ -6,6 +6,7 @@ using Api.EntitiDTOs;
 using Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using Api.Clases;
 
 namespace Api.Controllers
 {
@@ -17,20 +18,22 @@ namespace Api.Controllers
     {
 
         Context db = new Context();
+        PlazasMetodos PlazaMetodos = new PlazasMetodos();
  
         [HttpGet]
         public JsonResult GetPlazas()
         {
+            return new JsonResult(PlazaMetodos.GetPlazasyNumeros());
+            //var Plazas = (from c in db.Plazas
+            //              select new
+            //              {
+            //                  NombrePlaza = c.NombrePlaza,
+            //                  NumeroPlazaCapufe = c.NumeroPlazaCapufe
 
-            var Plazas = (from c in db.Plazas
-                          select new
-                          {
-                              NombrePlaza = c.NombrePlaza,
-                              NumeroPlazaCapufe = c.NumeroPlazaCapufe
+            //              }).ToArray();
 
-                          }).ToArray();
+            //return new JsonResult(Plazas);
 
-            return new JsonResult(Plazas);
 
         }
 

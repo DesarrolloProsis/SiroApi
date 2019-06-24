@@ -9,7 +9,10 @@ namespace Api.Clases
     class PlazasMetodos 
     {
         Context db = new Context();
-        
+
+        ///<summary>
+        /// Obtine una lista de con todos las Plazas
+        /// </summary>
         public List<PlazayNumero> GetPlazasyNumeros()
         {
             var Plazas = (from c in db.Plazas

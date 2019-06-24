@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.Clases;
 using Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,21 +15,23 @@ namespace Api.Controllers
     {
 
         Context db = new Context();
+        TramosMetodos TramoMetodos = new TramosMetodos();
 
         [HttpGet]
         public JsonResult GetTramos()
         {
 
-            var Tramos = (from c in db.Tramos
-                          select new
-                          {
-                              IdGare = c.IdGare,
-                              NumeroCapufe = c.NumeroPlazaCapufe,
-                              NombreTramo = c.NombreTramo,
+            return new JsonResult(TramoMetodos.GetTramosSinIp());
+            //var Tramos = (from c in db.Tramos
+            //              select new
+            //              {
+            //                  IdGare = c.IdGare,
+            //                  NumeroCapufe = c.NumeroPlazaCapufe,
+            //                  NombreTramo = c.NombreTramo,
 
-                          }).ToArray();
+            //              }).ToArray();
 
-            return new JsonResult(Tramos);
+            //return new JsonResult(Tramos);
 
         }
 
@@ -37,16 +40,17 @@ namespace Api.Controllers
         public JsonResult GetTramos(string NumPlaza)
         {
 
-            var TramoEspecifico = (from c in db.Tramos
-                                   where c.NumeroPlazaCapufe == NumPlaza
-                                   select new
-                                   {                          
-                                       NumeroCapufe = c.NumeroPlazaCapufe,
-                                       NombreTramo = c.NombreTramo,
+            return new JsonResult(TramoMetodos.GetTramos(NumPlaza));
+            //var TramoEspecifico = (from c in db.Tramos
+            //                       where c.NumeroPlazaCapufe == NumPlaza
+            //                       select new
+            //                       {                          
+            //                           NumeroCapufe = c.NumeroPlazaCapufe,
+            //                           NombreTramo = c.NombreTramo,
 
-                                   }).ToArray();
+            //                       }).ToArray();
 
-            return new JsonResult(TramoEspecifico);
+            //return new JsonResult(TramoEspecifico);
 
         }
 

@@ -9,6 +9,10 @@ namespace Api.Clases
     class TramosMetodos
     {
         Context db = new Context();
+
+        ///<summary>
+        /// Obtine una lista de con todos los Tramos sin IpVideo
+        /// </summary>
         public List<TramosSinIp> GetTramosSinIp()
         {
             var Tramos = (from t in db.Tramos
@@ -22,6 +26,9 @@ namespace Api.Clases
 
             return Tramos;
         }
+        ///<summary>
+        /// Obtine una lista de con todos los Tramos
+        /// </summary>
         public List<TramosFull> GetTramos()
         {
             var Tramos = (from t in db.Tramos
@@ -39,12 +46,12 @@ namespace Api.Clases
         ///<summary>
         /// Obtine una lista de tramos por su NumeroCapufe o NombrePlaza
         /// </summary>
-        public List<TramosFull> GetTramos(string nombreOnumero)
+        public List<TramosFull> GetTramos(string numeroOplaza)
         {
-            if (nombreOnumero.Length > 5)
+            if (numeroOplaza.Length < 5)
             {
                 var Tramos = (from t in db.Tramos
-                              where t.NumeroPlazaCapufe == nombreOnumero
+                              where t.NumeroPlazaCapufe == numeroOplaza
                               select new TramosFull
                               {
                                   IdGare = t.IdGare,
@@ -60,7 +67,7 @@ namespace Api.Clases
             {
                 var Tramos = (from t in db.Tramos
                               join p in db.Plazas on t.NumeroPlazaCapufe equals p.NumeroPlazaCapufe
-                              where p.NombrePlaza == nombreOnumero
+                              where p.NombrePlaza == numeroOplaza
                               select new TramosFull
                               {
                                   IdGare = t.IdGare,
@@ -73,19 +80,39 @@ namespace Api.Clases
                 return Tramos;
             }
         }
-        public List<TramosPlazas> GetTramosyPlazas(string numeroplaza)
+        ///<summary>
+        /// Obtine una lista NombrePlaza y IdGare por su NumeroCapufe o NombrePlaza
+        /// </summary>
+        public List<TramosPlazas> GetTramosyPlazas(string numeroOplaza)
         {
-            var Tramos = (from c in db.Plazas
-                          join p in db.Tramos on c.NumeroPlazaCapufe equals p.NumeroPlazaCapufe
-                          where c.NumeroPlazaCapufe == numeroplaza
-                          select new TramosPlazas
-                          {
-                              NombrePlaza = c.NombrePlaza,
-                              IdGare = p.IdGare,
-                          }
-                        ).ToList();
+            if (numeroOplaza.Length < 5)
+            {
+                var Tramos = (from c in db.Plazas
+                              join p in db.Tramos on c.NumeroPlazaCapufe equals p.NumeroPlazaCapufe
+                              where c.NumeroPlazaCapufe == numeroOplaza
+                              select new TramosPlazas
+                              {
+                                  NombrePlaza = c.NombrePlaza,
+                                  IdGare = p.IdGare,
+                              }
+                            ).ToList();
 
-            return Tramos;
+                return Tramos;
+            }
+            else
+            {
+                var Tramos = (from c in db.Plazas
+                              join p in db.Tramos on c.NumeroPlazaCapufe equals p.NumeroPlazaCapufe
+                              where c.NombrePlaza == numeroOplaza
+                              select new TramosPlazas
+                              {
+                                  NombrePlaza = c.NombrePlaza,
+                                  IdGare = p.IdGare,
+                              }
+                            ).ToList();
+
+                return Tramos;
+            }
         }
 
 
