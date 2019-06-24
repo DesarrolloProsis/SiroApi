@@ -153,12 +153,11 @@ namespace Api.Controllers
 
             List<Transacciones> Transaciones = new List<Transacciones>();
 
-            if (FechaFin == FechaInicio)
-            {
+            
                 foreach (var item in Tramos)
                 {
 
-                    var List = ConcentradoMetodos.GetConcentradoType(item.IdGare, FechaInicio);
+                    var List = ConcentradoMetodos.GetConcentradoType(item.IdGare, FechaInicio,FechaFin);
 
                     foreach (var item2 in List)
                     {
@@ -186,7 +185,7 @@ namespace Api.Controllers
                         ListTipoPago.Add(new CrucesTypePago
                         {
                             Pago = item.NombrePago,
-                            Cantidad = CantidadLinq
+                            Cantidad = CantidadLinq                            
 
                         });
                     }
@@ -213,7 +212,7 @@ namespace Api.Controllers
 
                 json = new { ListTipoPago, ListTipoVehiculo };
                
-            }
+            
 
             return new JsonResult(json);
 
@@ -320,12 +319,14 @@ namespace Api.Controllers
         {
             public string Pago { get; set; }
             public int Cantidad { get; set; }
+            public int TurnoId { get; set; }
         }
         private class CrucesTypeVehiculo
         {
          
             public string Vehiculo { get; set; }
             public int Cantidad { get; set; }
+            public int TurnoId { get; set; }
         }
 
 

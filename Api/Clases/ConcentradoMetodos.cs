@@ -35,21 +35,42 @@ namespace Api.Clases
         /// Obtine una lista de Concentrado/Transacciones
         /// Que contiene typePago/typeVehiculo
         /// </summary>
-        public List<ConcentradoType> GetConcentradoType(int idgare, DateTime fechaInicio)
+        public List<ConcentradoType> GetConcentradoType(int idgare, DateTime fechaInicio,DateTime fechaFin)
         {
-            var Concentrado = (from t in db.ConcentradoTransacciones
-                               where t.Fecha == fechaInicio
-                               where t.IdGare == idgare
-                               select new ConcentradoType
-                               {
-                                   Fecha = t.Fecha,
-                                   TipoPago = t.TipoPagoId,
-                                   TipoVehiculo = t.TipoVehiculoId,
-                                   IdTurno = t.TurnoId
+            if (fechaFin == fechaInicio)
+            {
 
-                               }).ToList();
+                var Concentrado = (from t in db.ConcentradoTransacciones
+                                   where t.Fecha == fechaInicio
+                                   where t.IdGare == idgare
+                                   select new ConcentradoType
+                                   {
+                                       Fecha = t.Fecha,
+                                       TipoPago = t.TipoPagoId,
+                                       TipoVehiculo = t.TipoVehiculoId,
+                                       IdTurno = t.TurnoId
 
-            return Concentrado;
+                                   }).ToList();
+
+                return Concentrado;
+            }
+            else
+            {
+                var Concentrado = (from t in db.ConcentradoTransacciones
+                                   where t.Fecha >= fechaInicio
+                                   where t.Fecha < fechaFin.AddDays(1)
+                                   where t.IdGare == idgare
+                                   select new ConcentradoType
+                                   {
+                                       Fecha = t.Fecha,
+                                       TipoPago = t.TipoPagoId,
+                                       TipoVehiculo = t.TipoVehiculoId,
+                                       IdTurno = t.TurnoId
+
+                                   }).ToList();
+
+                return Concentrado;
+            }
         }
 
     }
