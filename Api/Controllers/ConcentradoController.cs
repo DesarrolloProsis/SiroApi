@@ -104,11 +104,12 @@ namespace Api.Controllers
             List<TramoCruce> Lista = new List<TramoCruce>();
             string NombrePlaza = string.Empty;
             string NombreTramo = string.Empty;
-            int[] Cuerpos = new int[4];
+            
 
 
             foreach (var item in Plazas)
             {
+                int[] Cuerpos = new int[4];
                 var Tramos = TramoMetodos.GetTramos(item.NumeroPlaza);                
 
                 for (int i = 0; i < Tramos.Count; i++)
@@ -139,15 +140,16 @@ namespace Api.Controllers
             return new JsonResult(Lista);
         }
 
-        [Route("TiposPago/{plaza}/{fechaInicio}/{fechaFin}")]        
+        [Route("TiposPago/{plaza}/{fechaInicio}/{fechaFin}/{tramo}")]        
         [HttpGet]
-        public JsonResult GetCrucesTipoPagoFecha(string Plaza, string fechaInicio, string fechaFin)
+        public JsonResult GetCrucesTipoPagoFecha(string Plaza, string fechaInicio, string fechaFin, char tramo)
         {
 
             DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
             DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
 
-            var Tramos = TramoMetodos.GetTramos(Plaza);
+            //var Tramos = TramoMetodos.GetTramos(Plaza);
+            var Tramos = TramoMetodos.GetTramos(Plaza, tramo);
 
             object json = new object();
 
