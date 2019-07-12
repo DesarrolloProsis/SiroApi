@@ -222,18 +222,15 @@ namespace Api.Controllers
 
 
         [Route("Plaza/Turnos")]
+        [Route("Plaza/Turnos/{fechaInicio}/{fechaFin}")]
         [HttpGet]
-        public JsonResult GetPlazaTurnosCruces()
+        public JsonResult GetPlazaTurnosCruces(string fechaInicio, string fechaFin)
         {
 
-            var Plazas = (from c in db.Plazas
-                          select new
-                          {
+            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
 
-                              NombrePlaza = c.NombrePlaza,
-                              NumeroCapufe = c.NumeroPlazaCapufe,
-                          }
-                      ).ToList();
+            var Plazas = PlazaMetodos.GetPlazasyNumeros();
 
             var Turnos = db.Turnos.Where(x => x.TurnoId != 0).ToList();
 
@@ -241,7 +238,7 @@ namespace Api.Controllers
             List<PlazaTurnoCruce> Lista = new List<PlazaTurnoCruce>();
             string NombrePlaza = string.Empty;
             string NombreTramo = string.Empty;
-            string[] TurnosNombre = new[] { "nombrePlaza", "turnoMatutino", "turnoVespertino", "turnoNocturno" };
+            //string[] TurnosNombre = new[] { "nombrePlaza", "turnoMatutino", "turnoVespertino", "turnoNocturno" };
             int[] CrucesTurno = new int[4];
 
 
@@ -251,12 +248,14 @@ namespace Api.Controllers
             {
                 for (int i = 1; i <= 3; i++)
                 {
-                    var Tramos = db.Tramos.Where(x => x.NumeroPlazaCapufe == item.NumeroCapufe).ToList();
+                    var Tramos = TramoMetodos.GetTramos(item.NumeroPlaza);
+                    //var Tramos = db.Tramos.Where(x => x.NumeroPlazaCapufe == item.NumeroPlaza).ToList();
                     int AcumuladorCruces = 0;
 
                     for (int e = 0; e < Tramos.Count; e++)
                     {
-                        AcumuladorCruces += db.ConcentradoTransacciones.Where(x => x.IdGare == Tramos[e].IdGare && x.TurnoId == i).Count();
+                        AcumuladorCruces += ConcentradoMetodos.GetConcentradoTurnos(Tramos[e].IdGare, i, FechaInicio, FechaFin);
+                        //AcumuladorCruces += db.ConcentradoTransacciones.Where(x => x.IdGare == Tramos[e].IdGare && x.TurnoId == i).Count();
 
                     }
 
@@ -276,10 +275,10 @@ namespace Api.Controllers
 
             }
 
-            object json = new { Lista, TurnosNombre };
+            //object json = new { Lista, TurnosNombre };
 
 
-            return new JsonResult(json);
+            return new JsonResult(Lista);
         }
 
 

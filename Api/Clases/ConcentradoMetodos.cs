@@ -73,6 +73,25 @@ namespace Api.Clases
             }
         }
 
+        ///<summary>
+        /// Obtine el count de Cruces
+        /// Filtrado por fecha,turno,idGare
+        /// </summary>
+        public int GetConcentradoTurnos(int idGare, int turno, DateTime fechaInicio, DateTime fechaFin)
+        {
+            return db.ConcentradoTransacciones.Where(x => x.Fecha >= fechaInicio && x.Fecha < fechaFin.AddDays(1) && x.IdGare == idGare && x.TurnoId == turno).Count();
+        }
+        ///<summary>
+        /// Obtine el count de Cruces
+        /// Filtrado por fecha,turno,idGare
+        /// </summary>
+        public int GetConcentradoTurnos(int idGare, int turno, DateTime fechaInicio)
+        {
+            return db.ConcentradoTransacciones.Where(x => x.Fecha == fechaInicio && x.IdGare == idGare && x.TurnoId == turno).Count();
+        }
+
+        //AcumuladorCruces += db.ConcentradoTransacciones.Where(x => x.IdGare == Tramos[e].IdGare && x.TurnoId == i).Count();
+
     }
     class ConcentradoType
     {
