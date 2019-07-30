@@ -26,6 +26,21 @@ namespace Api.Clases
             return Plazas;
         }
 
+        public string ConvertNombrePlaza(string NombrePlaza)
+        {
+            var Plazas = (from c in db.Plazas
+                          where c.NombrePlaza == NombrePlaza
+                          select new PlazayNumero
+                          {
+                              NumeroPlaza = c.NumeroPlazaCapufe,
+
+                          }).ToList();
+            if (Plazas.Count > 0) return Plazas[0].NumeroPlaza;
+            else return "error conversion";
+            
+        }
+
+
 
     }
 

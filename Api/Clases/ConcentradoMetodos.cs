@@ -9,95 +9,228 @@ namespace Api.Clases
     class ConcentradoMetodos
     {
         Context db = new Context();
+        TramosMetodos TramosMetodos = new TramosMetodos();
 
-        ///<summary>
-        /// Obtine el Total(count) de Concentrado/Transacciones por IdGare
-        /// </summary>
-        public int GetPlazaCruces(int idgare)
+        public List<Concentrados> GetCruces(string NumeroPlaza, DateTime FechaInicio, DateTime FechaFin)
         {
-            return db.ConcentradoTransacciones.Where(x => x.IdGare == idgare).Count();
-        }
-        ///<summary>
-        /// Obtine el Total(count) de Concentrado/Transacciones por IdGare y Fecha
-        /// </summary>
-        public int GetPlazaCruces(int idgare, DateTime fechaInicio)
-        {
-            return db.ConcentradoTransacciones.Where(x => x.IdGare == idgare && x.Fecha == fechaInicio).Count(); ;
-        }
-        ///<summary>
-        /// Obtine el Total(count) de Concentrado/Transacciones por IdGare y Fechas
-        /// </summary>
-        public int GetPlazaCruces(int idgare, DateTime fechaInicio, DateTime fechaFin)
-        {
-            return db.ConcentradoTransacciones.Where(x => x.IdGare == idgare && x.Fecha >= fechaInicio && x.Fecha <= fechaFin).Count(); ;
-        }
-        ///<summary>
-        /// Obtine una lista de Concentrado/Transacciones
-        /// Que contiene typePago/typeVehiculo
-        /// </summary>
-        public List<ConcentradoType> GetConcentradoType(int idgare, DateTime fechaInicio,DateTime fechaFin)
-        {
-            if (fechaFin == fechaInicio)
-            {
+                
+                var Lista = (from c in db.ConcentradoTransacciones 
+                             join p in db.Tramos on c.IdGare equals p.IdGare
+                             where c.Fecha >= FechaInicio && c.Fecha < FechaInicio.AddDays(1)
+                             where p.NumeroPlazaCapufe == NumeroPlaza
+                                select new Concentrados
+                                {
+                                 Fecha = c.Fecha,
+                                 IdGare = c.IdGare,
+                                 IdTurno = c.TurnoId,
+                                 TipoPago = c.TipoPagoId,
+                                 TipoVehiculo = c.TipoVehiculoId,
+                                 NumCarril = c.NumeroCapufeCarril
 
-                var Concentrado = (from t in db.ConcentradoTransacciones
-                                   where t.Fecha == fechaInicio
-                                   where t.IdGare == idgare
-                                   select new ConcentradoType
-                                   {
-                                       Fecha = t.Fecha,
-                                       TipoPago = t.TipoPagoId,
-                                       TipoVehiculo = t.TipoVehiculoId,
-                                       IdTurno = t.TurnoId
+                             }).ToList();                                   
 
-                                   }).ToList();
-
-                return Concentrado;
-            }
-            else
-            {
-                var Concentrado = (from t in db.ConcentradoTransacciones
-                                   where t.Fecha >= fechaInicio
-                                   where t.Fecha < fechaFin.AddDays(1)
-                                   where t.IdGare == idgare
-                                   select new ConcentradoType
-                                   {
-                                       Fecha = t.Fecha,
-                                       TipoPago = t.TipoPagoId,
-                                       TipoVehiculo = t.TipoVehiculoId,
-                                       IdTurno = t.TurnoId
-
-                                   }).ToList();
-
-                return Concentrado;
-            }
+            return Lista;
         }
 
-        ///<summary>
-        /// Obtine el count de Cruces
-        /// Filtrado por fecha,turno,idGare
-        /// </summary>
-        public int GetConcentradoTurnos(int idGare, int turno, DateTime fechaInicio, DateTime fechaFin)
+        public List<Concentrados> GetCruces(string NumeroPlaza, DateTime FechaInicio)
         {
-            return db.ConcentradoTransacciones.Where(x => x.Fecha >= fechaInicio && x.Fecha < fechaFin.AddDays(1) && x.IdGare == idGare && x.TurnoId == turno).Count();
-        }
-        ///<summary>
-        /// Obtine el count de Cruces
-        /// Filtrado por fecha,turno,idGare
-        /// </summary>
-        public int GetConcentradoTurnos(int idGare, int turno, DateTime fechaInicio)
-        {
-            return db.ConcentradoTransacciones.Where(x => x.Fecha == fechaInicio && x.IdGare == idGare && x.TurnoId == turno).Count();
+            var Lista = (from c in db.ConcentradoTransacciones
+                         join p in db.Tramos on c.IdGare equals p.IdGare
+                         where c.Fecha >= FechaInicio && c.Fecha < FechaInicio.AddDays(1)
+                         where p.NumeroPlazaCapufe == NumeroPlaza
+                         select new Concentrados
+                         {
+                             Fecha = c.Fecha,
+                             IdGare = c.IdGare,
+                             IdTurno = c.TurnoId,
+                             TipoPago = c.TipoPagoId,
+                             TipoVehiculo = c.TipoVehiculoId,
+                             NumCarril = c.NumeroCapufeCarril
+
+                         }).ToList();
+
+            return Lista;
         }
 
-        //AcumuladorCruces += db.ConcentradoTransacciones.Where(x => x.IdGare == Tramos[e].IdGare && x.TurnoId == i).Count();
+        public int GetCrucesCount(string NumeroPlaza, DateTime FechaInicio, DateTime FechaFin)
+        {
+            var Lista = (from c in db.ConcentradoTransacciones
+                         join p in db.Tramos on c.IdGare equals p.IdGare
+                         where c.Fecha >= FechaInicio && c.Fecha < FechaInicio.AddDays(1)
+                         where p.NumeroPlazaCapufe == NumeroPlaza
+                         select new Concentrados
+                         {
+                             Fecha = c.Fecha,
+                             IdGare = c.IdGare,
+                             IdTurno = c.TurnoId,
+                             TipoPago = c.TipoPagoId,
+                             TipoVehiculo = c.TipoVehiculoId,
+                             NumCarril = c.NumeroCapufeCarril
+
+                         }).Count();
+
+            return Lista;
+        }
+  
+        public int GetCrucesCount(string NumeroPlaza, DateTime FechaInicio)
+        {
+            var Lista = (from c in db.ConcentradoTransacciones
+                         join p in db.Tramos on c.IdGare equals p.IdGare
+                         where c.Fecha >= FechaInicio && c.Fecha < FechaInicio.AddDays(1)
+                         where p.NumeroPlazaCapufe == NumeroPlaza
+                         select new Concentrados
+                         {
+                             Fecha = c.Fecha,
+                             IdGare = c.IdGare,
+                             IdTurno = c.TurnoId,
+                             TipoPago = c.TipoPagoId,
+                             TipoVehiculo = c.TipoVehiculoId,
+                             NumCarril = c.NumeroCapufeCarril
+
+                         }).Count();
+
+            return Lista;
+        }
+
+        public int GetCrucesTramo(int idgare, DateTime FechaInicio, DateTime FechaFin)
+        {
+            var Lista = (from c in db.ConcentradoTransacciones
+                         where c.Fecha >= FechaInicio && c.Fecha < FechaFin
+                         where c.IdGare == idgare
+                         select new Concentrados
+                         {
+                             Fecha = c.Fecha,
+                             IdGare = c.IdGare,
+                             IdTurno = c.TurnoId,
+                             TipoPago = c.TipoPagoId,
+                             TipoVehiculo = c.TipoVehiculoId,
+                             NumCarril = c.NumeroCapufeCarril
+
+                         }).Count();
+
+            return Lista;
+
+        }
+
+        public int GetCrucesTramo(int idgare, DateTime FechaInicio)
+        {
+            var Lista = (from c in db.ConcentradoTransacciones                       
+                         where c.Fecha >= FechaInicio && c.Fecha < FechaInicio.AddDays(1)
+                         where c.IdGare == idgare
+                         select new Concentrados
+                         {
+                             Fecha = c.Fecha,
+                             IdGare = c.IdGare,
+                             IdTurno = c.TurnoId,
+                             TipoPago = c.TipoPagoId,
+                             TipoVehiculo = c.TipoVehiculoId,
+                             NumCarril = c.NumeroCapufeCarril
+
+                         }).Count();
+
+            return Lista;
+
+        }
+
+  
+
+        public List<Concentrados> GetCrucesTurnos(string NumeroPlaza , int idTurno, DateTime FechaInicio, DateTime FechaFin)
+        {
+            var Lista = (from c in db.ConcentradoTransacciones
+                         join p in db.Tramos on c.IdGare equals p.IdGare
+                         where c.Fecha >= FechaInicio && c.Fecha < FechaInicio.AddDays(1)
+                         where p.NumeroPlazaCapufe == NumeroPlaza
+                         where c.TurnoId == idTurno
+                         select new Concentrados
+                         {
+                             Fecha = c.Fecha,
+                             IdGare = c.IdGare,
+                             IdTurno = c.TurnoId,
+                             TipoPago = c.TipoPagoId,
+                             TipoVehiculo = c.TipoVehiculoId,
+                             NumCarril = c.NumeroCapufeCarril
+
+                         }).ToList();
+
+            return Lista;
+        }
+        public int GetCrucesTurnosCount(string NumeroPlaza, int idTurno, DateTime FechaInicio, DateTime FechaFin)
+        {
+            var Lista = (from c in db.ConcentradoTransacciones
+                         join p in db.Tramos on c.IdGare equals p.IdGare
+                         where c.Fecha >= FechaInicio && c.Fecha < FechaFin
+                         where p.NumeroPlazaCapufe == NumeroPlaza
+                         where c.TurnoId == idTurno
+                         select new Concentrados
+                         {
+                             Fecha = c.Fecha,
+                             IdGare = c.IdGare,
+                             IdTurno = c.TurnoId,
+                             TipoPago = c.TipoPagoId,
+                             TipoVehiculo = c.TipoVehiculoId,
+                             NumCarril = c.NumeroCapufeCarril
+
+                         }).Count();
+
+            return Lista;
+        }
+        public int GetCrucesTurnosCount(string NumeroPlaza, int idTurno, DateTime FechaInicio)
+        {
+            var Lista = (from c in db.ConcentradoTransacciones
+                         join p in db.Tramos on c.IdGare equals p.IdGare
+                         where c.Fecha >= FechaInicio && c.Fecha < FechaInicio.AddDays(1)
+                         where p.NumeroPlazaCapufe == NumeroPlaza
+                         where c.TurnoId == idTurno
+                         select new Concentrados
+                         {
+                             Fecha = c.Fecha,
+                             IdGare = c.IdGare,
+                             IdTurno = c.TurnoId,
+                             TipoPago = c.TipoPagoId,
+                             TipoVehiculo = c.TipoVehiculoId,
+                             NumCarril = c.NumeroCapufeCarril
+
+                         }).Count();
+
+            return Lista;
+        }
+
+        public int  GetCrucesTypePagoCount(string numeroPlaza, int idPago, DateTime FechaInicio, DateTime FechaFin)
+        {
+            var Transacciones = GetCruces(numeroPlaza, FechaInicio, FechaFin);
+            var Total = Transacciones.Where(x => x.TipoPago == idPago).Count();
+            return Total;
+        }
+        public int GetCrucesTypePagoCount(string numeroPlaza, int idPago, DateTime FechaInicio)
+        {
+            var Transacciones = GetCruces(numeroPlaza, FechaInicio);
+            var Total = Transacciones.Where(x => x.TipoPago == idPago).Count();
+            return Total;
+        }
+
+        public int GetCrucesTypeVehiculoCount(string numeroPlaza, int idVehiculo, DateTime FechaInicio, DateTime FechaFin)
+        {
+            var Transacciones = GetCruces(numeroPlaza, FechaInicio, FechaFin);
+            var Total = Transacciones.Where(x => x.TipoVehiculo == idVehiculo).Count();
+            return Total;
+        }
+        public int GetCrucesTypeVehiculoCount(string numeroPlaza, int idVehiculo, DateTime FechaInicio)
+        {
+            var Transacciones = GetCruces(numeroPlaza, FechaInicio);
+            var Total = Transacciones.Where(x => x.TipoVehiculo == idVehiculo).Count();
+            return Total;
+        }
+
+
 
     }
-    class ConcentradoType
+    class Concentrados
     {
         public DateTime Fecha { get; set; }
         public int TipoPago { get; set; }
         public int TipoVehiculo { get; set; }
+        public int NumCarril { get; set; }
         public int IdTurno { get; set; }
+        public int IdGare { get; set; }
     }
 }

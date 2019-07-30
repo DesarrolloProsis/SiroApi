@@ -27,7 +27,7 @@ namespace Api.Clases
             return Tramos;
         }
         ///<summary>
-        /// Obtine una lista de con todos los Tramos
+        /// Obtine una lista con todos los Tramos
         /// </summary>
         public List<TramosFull> GetTramos()
         {
