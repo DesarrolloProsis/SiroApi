@@ -141,6 +141,21 @@ namespace Api.Clases
             }
         }
 
+        public List<TramosSinIp> GetTramosNumeroPlaza(string numeroPlaza)
+        {
+            var Lista = (from t in db.Tramos
+                         where t.NumeroPlazaCapufe == numeroPlaza
+                         select new TramosSinIp
+                         {
+                             IdGare = t.IdGare,
+                             NombreTramo = t.NombreTramo,
+                             NumeroPlaza = t.NumeroPlazaCapufe
+                         }).ToList();
+
+            return Lista;
+
+        }
+
         private int ConvertTramosMasCuerpo(string PlazaTramo)
         {
             int Idgare = 0;

@@ -983,6 +983,802 @@ namespace Api.Clases
             return json;
         }
 
+        public object GraficaPieTypePagoFull(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
+        {
+            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var TipodePago = db.TipoPago.ToList();
+            List<GraficaPieTypePago> Lista = new List<GraficaPieTypePago>();
+            List<string> columns = new List<string>();
+
+            if (FechaInicio == FechaFin)
+            {
+
+                foreach (var item in TipodePago)
+                {
+                    if (ConcentradosMetodos.GetCrucesTypePagoCount(Plazas, item.TipoPagoId, FechaInicio) > 0)
+                    {
+
+                        Lista.Add(new GraficaPieTypePago
+                        {
+
+                            TypePago = item.NombrePago,
+                            total = ConcentradosMetodos.GetCrucesTypePagoCount(Plazas, item.TipoPagoId, FechaInicio)
+
+                        });
+                    }
+                }
+            }
+            else
+            {
+                foreach (var item in TipodePago)
+                {
+                    if (ConcentradosMetodos.GetCrucesTypePagoCount(Plazas, item.TipoPagoId, FechaInicio, FechaFin) > 0)
+                    {
+
+                        Lista.Add(new GraficaPieTypePago
+                        {
+
+                            TypePago = item.NombrePago,
+                            total = ConcentradosMetodos.GetCrucesTypePagoCount(Plazas, item.TipoPagoId, FechaInicio, FechaFin)
+
+                        });
+                    }
+                }
+            }
+            columns.Add("typePago");
+            columns.Add("total");
+
+            object Json = new { Lista, columns };
+
+            return Json;
+
+        }
+
+        public object GraficaPieTypeVehiculoFull(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
+        {
+            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var TipodeVehiculo = db.TipoVehiculo.ToList();
+            List<GraficaPieTypeVehiculo> Lista = new List<GraficaPieTypeVehiculo>();
+            List<string> columns = new List<string>();
+
+            if (FechaInicio == FechaFin)
+            {
+
+                foreach (var item in TipodeVehiculo)
+                {
+                    if (ConcentradosMetodos.GetCrucesTypePagoCount(Plazas, item.TipoVehiculoId, FechaInicio) > 0)
+                    {
+
+                        Lista.Add(new GraficaPieTypeVehiculo
+                        {
+
+                            TypeVehiculo = item.ClaveVehiculo,                            
+                            total = ConcentradosMetodos.GetCrucesTypePagoCount(Plazas, item.TipoVehiculoId, FechaInicio)
+
+                        });
+                    }
+                }
+            }
+            else
+            {
+                foreach (var item in TipodeVehiculo)
+                {
+                    if (ConcentradosMetodos.GetCrucesTypePagoCount(Plazas, item.TipoVehiculoId, FechaInicio, FechaFin) > 0)
+                    {
+
+                        Lista.Add(new GraficaPieTypeVehiculo
+                        {
+
+                            TypeVehiculo = item.ClaveVehiculo,                           
+                            total = ConcentradosMetodos.GetCrucesTypePagoCount(Plazas, item.TipoVehiculoId, FechaInicio, FechaFin)
+
+                        });
+                    }
+                }
+            }
+            columns.Add("typeVehiculo");
+            columns.Add("total");
+
+            object Json = new { Lista, columns };
+
+            return Json;
+
+        }
+        public object GraficaPieTramo(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
+        {
+            var Tramos = TramosMetodos.GetTramosNumeroPlaza(PlazasMetodos.ConvertNombrePlaza(nombrePlaza));
+
+            List<GraficaCruce> Lista = new List<GraficaCruce>();
+            List<string> columns = new List<string>();
+
+            foreach (var item in Tramos)
+            {
+                
+
+                if (FechaInicio == FechaFin)
+                {
+
+                    Lista.Add(new GraficaCruce
+                    {
+                        NombrePlaza = item.NombreTramo,
+                        TotalCruces = ConcentradosMetodos.GetCrucesTramo(item.IdGare, FechaInicio)
+                    });
+
+                }
+                else
+                {
+                    Lista.Add(new GraficaCruce
+                    {
+                        NombrePlaza = item.NombreTramo,
+                        TotalCruces = ConcentradosMetodos.GetCrucesTramo(item.IdGare, FechaInicio, FechaFin)
+                    });
+                }
+            }
+
+            columns.Add("nombrePlaza");
+            columns.Add("totalCruces");
+
+            object json = new { Lista, columns };
+
+            return json;
+
+            
+        }
+
+        public object GraficaPieTurnos(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
+        {
+
+            var Plaza = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            string[] columns = new[] { "nombreTurno", "total" };
+            string[] nombres = new[] { "nombrePlaza", "turnoMatutino", "turnoVespertino", "turnoNocturno" };
+
+            List<GraficaPieTurno> Lista = new List<GraficaPieTurno>();
+
+            for(int i = 1; i <= 3; i++)
+            {
+                if(FechaInicio == FechaFin)
+                {
+                    Lista.Add(new GraficaPieTurno
+                    {
+                        nombreTurno = nombres[i],
+                        total = ConcentradosMetodos.GetCrucesTurnosCount(Plaza, i, FechaInicio)
+                    });
+
+                }
+                else
+                {
+                    Lista.Add(new GraficaPieTurno
+                    {
+                        nombreTurno = nombres[i],
+                        total = ConcentradosMetodos.GetCrucesTurnosCount(Plaza, i, FechaInicio, FechaFin)
+                    });
+                }
+            }
+
+            object Json = new { Lista, columns };
+
+            return Json;
+
+
+        }
+
+        public object GraficasPieTypePago(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
+        {
+            var TiposdePago = db.TipoPago.ToList();
+
+            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);    
+            List<GraficaPieTypePago> Lista = new List<GraficaPieTypePago>();
+            List<string> columns = new List<string>();
+
+            if (FechaInicio == FechaFin)
+            {
+
+                foreach (var item in TiposdePago)
+                {
+                    Lista.Add(new GraficaPieTypePago
+                    {
+                        TypePago = item.NombrePago,
+                        total = ConcentradosMetodos.GetCrucesTypePagoCount(Plazas, item.TipoPagoId, FechaInicio),
+                    });
+                }
+            }
+            else
+            {
+
+                foreach (var item in TiposdePago)
+                {
+                    Lista.Add(new GraficaPieTypePago
+                    {
+                        TypePago = item.NombrePago,
+                        total = ConcentradosMetodos.GetCrucesTypePagoCount(Plazas, item.TipoPagoId, FechaInicio, FechaFin),
+                    });
+                }
+            }
+
+            columns.Add("typePago");
+            columns.Add("total");
+
+
+            object Json = new { Lista, columns };
+
+            return Json;
+        }
+
+        public object GraficasPieTypeVehiculo(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
+        {
+            var TiposdePago = db.TipoVehiculo.ToList();
+
+            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            List<GraficaPieTypeVehiculo> Lista = new List<GraficaPieTypeVehiculo>();
+            List<string> columns = new List<string>();
+
+            if (FechaInicio == FechaFin)
+            {
+
+                foreach (var item in TiposdePago)
+                {
+                    Lista.Add(new GraficaPieTypeVehiculo
+                    {
+                        TypeVehiculo = item.ClaveVehiculo,
+                        total = ConcentradosMetodos.GetCrucesTypePagoCount(Plazas, item.TipoVehiculoId, FechaInicio),
+                    });
+                }
+            }
+            else
+            {
+
+                foreach (var item in TiposdePago)
+                {
+                    Lista.Add(new GraficaPieTypeVehiculo
+                    {
+                        TypeVehiculo = item.ClaveVehiculo,
+                        total = ConcentradosMetodos.GetCrucesTypePagoCount(Plazas, item.TipoVehiculoId, FechaInicio, FechaFin),
+                    });
+                }
+            }
+
+            columns.Add("typeVehiculo");
+            columns.Add("total");
+
+            object Json = new { Lista, columns };
+
+            return Json;
+        }
+
+        public object GraficasPieTramoTypePago(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
+        {
+            var TiposdePago = db.TipoPago.ToList();
+            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Tramos = TramosMetodos.GetTramosNumeroPlaza(Plazas);
+            List<GraficaPieTypePago> ListaA = new List<GraficaPieTypePago>();
+            List<GraficaPieTypePago> ListaB = new List<GraficaPieTypePago>();
+            List<GraficaPieTypePago> ListaC = new List<GraficaPieTypePago>();
+            List<GraficaPieTypePago> ListaD = new List<GraficaPieTypePago>();
+
+            List<string> columns = new List<string>();
+     
+
+
+            if (nombrePlaza != "Libramiento")
+            {
+
+                if (FechaInicio == FechaFin)
+                {
+
+                    foreach (var item in TiposdePago)
+                    {
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        {
+
+                            ListaA.Add(new GraficaPieTypePago
+                            {
+                                TypePago = item.NombrePago,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio),
+                            });
+                        }
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        {
+                            ListaB.Add(new GraficaPieTypePago
+                            {
+                                TypePago = item.NombrePago,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio),
+                            });
+                        }
+                    }
+
+
+                }
+                else
+                {
+                    foreach (var item in TiposdePago)
+                    {
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        {
+                            ListaA.Add(new GraficaPieTypePago
+                            {
+                                TypePago = item.NombrePago,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio),
+                            });
+                        }
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        {
+                            ListaB.Add(new GraficaPieTypePago
+                            {
+                                TypePago = item.NombrePago,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio),
+                            });
+                        }
+                    }
+
+                }
+
+                columns.Add("typePago");
+                columns.Add("total");
+
+
+
+                object Json = new { ListaA, ListaB, columns };
+
+                return Json;
+            }
+            else
+            {
+
+
+                if (FechaInicio == FechaFin)
+                {
+
+                    foreach (var item in TiposdePago)
+                    {
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        {
+                            ListaA.Add(new GraficaPieTypePago
+                            {
+                                TypePago = item.NombrePago,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio),
+                            });
+                        }
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        {
+
+                            ListaB.Add(new GraficaPieTypePago
+                            {
+                                TypePago = item.NombrePago,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio),
+                            });
+
+                        }
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[2].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        {
+                            ListaC.Add(new GraficaPieTypePago
+                            {
+                                TypePago = item.NombrePago,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[2].IdGare, item.TipoPagoId, FechaInicio),
+                            });
+                        }
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[3].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        {
+                            ListaD.Add(new GraficaPieTypePago
+                            {
+                                TypePago = item.NombrePago,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[3].IdGare, item.TipoPagoId, FechaInicio),
+                            });
+                        }
+                    }
+
+
+                }
+                else
+                {
+                    foreach (var item in TiposdePago)
+                    {
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        {
+                            ListaA.Add(new GraficaPieTypePago
+                            {
+                                TypePago = item.NombrePago,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio),
+                            });
+                        }
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        {
+                            ListaB.Add(new GraficaPieTypePago
+                            {
+                                TypePago = item.NombrePago,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio),
+                            });
+                        }
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[2].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        {
+                            ListaC.Add(new GraficaPieTypePago
+                            {
+                                TypePago = item.NombrePago,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[2].IdGare, item.TipoPagoId, FechaInicio),
+                            });
+                        }
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[3].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        {
+                            ListaD.Add(new GraficaPieTypePago
+                            {
+                                TypePago = item.NombrePago,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[3].IdGare, item.TipoPagoId, FechaInicio),
+                            });
+                        }
+                    }
+
+                }
+
+
+                columns.Add("typePago");
+                columns.Add("total");
+
+                object Json = new { ListaA, ListaB, ListaC, ListaD, columns };
+
+                return Json;
+            }
+        }
+
+        public object GraficasPieTramoTypeVehiculo(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
+        {
+            var TiposdeVehiculo = db.TipoVehiculo.ToList();
+            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Tramos = TramosMetodos.GetTramosNumeroPlaza(Plazas);
+            List<GraficaPieTypeVehiculo> ListaA = new List<GraficaPieTypeVehiculo>();
+            List<GraficaPieTypeVehiculo> ListaB = new List<GraficaPieTypeVehiculo>();
+            List<GraficaPieTypeVehiculo> ListaC = new List<GraficaPieTypeVehiculo>();
+            List<GraficaPieTypeVehiculo> ListaD = new List<GraficaPieTypeVehiculo>();
+
+            List<string> columns = new List<string>();
+
+            if (nombrePlaza != "Libramiento")
+            {
+
+                if (FechaInicio == FechaFin)
+                {
+
+                    foreach (var item in TiposdeVehiculo)
+                    {
+                        if (ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        {
+                            ListaA.Add(new GraficaPieTypeVehiculo
+                            {
+                                TypeVehiculo = item.ClaveVehiculo,
+                                total = ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio),
+                            });
+                        }
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        {
+                            ListaB.Add(new GraficaPieTypeVehiculo
+                            {
+                                TypeVehiculo = item.ClaveVehiculo,
+                                total = ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio),
+                            });
+                        }
+                    }
+
+
+                }
+                else
+                {
+                    foreach (var item in TiposdeVehiculo)
+                    {
+                        if (ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        {
+                            ListaA.Add(new GraficaPieTypeVehiculo
+                            {
+                                TypeVehiculo = item.ClaveVehiculo,
+                                total = ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio),
+                            });
+                        }
+
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        {
+                            ListaB.Add(new GraficaPieTypeVehiculo
+                            {
+                                TypeVehiculo = item.ClaveVehiculo,
+                                total = ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio),
+                            });
+                        }
+                    }
+
+                }
+
+
+                columns.Add("typeVehiculo");
+                columns.Add("total");
+
+
+                object Json = new { ListaA, ListaB, columns };
+
+                return Json;
+            }
+            else
+            {
+
+
+                if (FechaInicio == FechaFin)
+                {
+
+                    foreach (var item in TiposdeVehiculo)
+                    {
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        {
+                            ListaA.Add(new GraficaPieTypeVehiculo
+                            {
+                                TypeVehiculo = item.ClaveVehiculo,
+                                total = ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio),
+                            });
+                        }
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        {
+                            ListaB.Add(new GraficaPieTypeVehiculo
+                            {
+                                TypeVehiculo = item.ClaveVehiculo,
+                                total = ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio),
+                            });
+                        }
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[2].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        {
+                            ListaC.Add(new GraficaPieTypeVehiculo
+                            {
+                                TypeVehiculo = item.ClaveVehiculo,
+                                total = ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[2].IdGare, item.TipoVehiculoId, FechaInicio),
+                            });
+                        }
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[3].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        {
+                            ListaD.Add(new GraficaPieTypeVehiculo
+                            {
+                                TypeVehiculo = item.ClaveVehiculo,
+                                total = ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[3].IdGare, item.TipoVehiculoId, FechaInicio),
+                            });
+                        }
+                    }
+
+
+                }
+                else
+                {
+                    foreach (var item in TiposdeVehiculo)
+                    {
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        {
+                            ListaA.Add(new GraficaPieTypeVehiculo
+                            {
+                                TypeVehiculo = item.ClaveVehiculo,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio),
+                            });
+                        }
+
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        {
+                            ListaB.Add(new GraficaPieTypeVehiculo
+                            {
+                                TypeVehiculo = item.ClaveVehiculo,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio),
+                            });
+                        }
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[2].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        {
+
+                            ListaC.Add(new GraficaPieTypeVehiculo
+                            {
+                                TypeVehiculo = item.ClaveVehiculo,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[2].IdGare, item.TipoVehiculoId, FechaInicio),
+                            });
+                        }
+
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[3].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        {
+                            ListaD.Add(new GraficaPieTypeVehiculo
+                            {
+                                TypeVehiculo = item.ClaveVehiculo,
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[3].IdGare, item.TipoVehiculoId, FechaInicio),
+                            });
+                        }
+                    }
+
+                }
+
+                columns.Add("typeVehiculo");
+                columns.Add("total");
+
+                object Json = new { ListaA, ListaB, ListaC, ListaD, columns };
+
+                return Json;
+            }
+        }
+
+        public object GraficaPieTurnosTypePago(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
+        {
+            List<GraficaPieTurnoTypePago> Turno1 = new List<GraficaPieTurnoTypePago>();
+            List<GraficaPieTurnoTypePago> Turno2 = new List<GraficaPieTurnoTypePago>();
+            List<GraficaPieTurnoTypePago> Turno3 = new List<GraficaPieTurnoTypePago>();
+            List<string> columns = new List<string>();
+            string[] NombreTurnos = new[] { "turnoMatutino", "turnoVespertino", "turnoNocturno" };
+            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+
+            var TipodePago = db.TipoPago.ToList();
+
+            if(FechaInicio == FechaFin)
+            {
+               
+                    foreach (var item in TipodePago)
+                    {
+                        Turno1.Add(new GraficaPieTurnoTypePago
+                        {
+                            nombreTurno = NombreTurnos[0],
+                            TypePago = item.NombrePago,
+                            total = ConcentradosMetodos.GetCrucesTurnosTypePago(Plazas, item.TipoPagoId, 1, FechaInicio)
+                        });
+
+                        Turno2.Add(new GraficaPieTurnoTypePago
+                        {
+                        nombreTurno = NombreTurnos[1],
+                        TypePago = item.NombrePago,
+                        total = ConcentradosMetodos.GetCrucesTurnosTypePago(Plazas, item.TipoPagoId, 2, FechaInicio)
+
+                        });
+
+                         Turno3.Add(new GraficaPieTurnoTypePago
+                         {
+                        nombreTurno = NombreTurnos[2],
+                        TypePago = item.NombrePago,
+                        total = ConcentradosMetodos.GetCrucesTurnosTypePago(Plazas, item.TipoPagoId, 3, FechaInicio)
+                         });
+                    }
+
+
+                columns.Add("typePago");
+                columns.Add("total");
+
+                object Json = new { Turno1, Turno2, Turno3, columns};
+                return Json;
+
+
+            }
+            else
+            {
+                foreach (var item in TipodePago)
+                {
+                    Turno1.Add(new GraficaPieTurnoTypePago
+                    {
+                        nombreTurno = NombreTurnos[0],
+                        TypePago = item.NombrePago,
+                        total = ConcentradosMetodos.GetCrucesTurnosTypePago(Plazas, item.TipoPagoId, 1, FechaInicio, FechaFin)
+                    });
+
+                    Turno2.Add(new GraficaPieTurnoTypePago
+                    {
+                        nombreTurno = NombreTurnos[1],
+                        TypePago = item.NombrePago,
+                        total = ConcentradosMetodos.GetCrucesTurnosTypePago(Plazas, item.TipoPagoId, 2, FechaInicio, FechaFin)
+                    });
+
+                    Turno3.Add(new GraficaPieTurnoTypePago
+                    {
+                        nombreTurno = NombreTurnos[2],
+                        TypePago = item.NombrePago,
+                        total = ConcentradosMetodos.GetCrucesTurnosTypePago(Plazas, item.TipoPagoId, 3, FechaInicio, FechaFin)
+                    });
+
+                   
+                }
+
+                columns.Add("typePago");
+                columns.Add("total");
+
+                object Json = new { Turno1, Turno2, Turno3, columns };
+                return Json;
+            }
+
+        }
+        public object GraficaPieTurnosTypeVehiculo(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
+        {
+            List<GraficaPieTurnoTypeVehiculo> Turno1 = new List<GraficaPieTurnoTypeVehiculo>();
+            List<GraficaPieTurnoTypeVehiculo> Turno2 = new List<GraficaPieTurnoTypeVehiculo>();
+            List<GraficaPieTurnoTypeVehiculo> Turno3 = new List<GraficaPieTurnoTypeVehiculo>();
+            List<string> columns = new List<string>();
+     
+            string[] NombreTurnos = new[] { "turnoMatutino", "turnoVespertino", "turnoNocturno" };
+            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+
+            var TipodePago = db.TipoVehiculo.ToList();
+
+            if (FechaInicio == FechaFin)
+            {
+
+                foreach (var item in TipodePago)
+                {
+                    Turno1.Add(new GraficaPieTurnoTypeVehiculo
+                    {
+                        nombreTurno = NombreTurnos[0],
+                        TypeVehiculo = item.ClaveVehiculo,
+                        total = ConcentradosMetodos.GetCrucesTurnosTypeVehiculo(Plazas, item.TipoVehiculoId, 1, FechaInicio)
+                    });
+
+                    Turno2.Add(new GraficaPieTurnoTypeVehiculo
+                    {
+                        nombreTurno = NombreTurnos[1],
+                        TypeVehiculo = item.ClaveVehiculo,
+                        total = ConcentradosMetodos.GetCrucesTurnosTypeVehiculo(Plazas, item.TipoVehiculoId, 2, FechaInicio)
+
+                    });
+
+                    Turno3.Add(new GraficaPieTurnoTypeVehiculo
+                    {
+                        nombreTurno = NombreTurnos[2],
+                        TypeVehiculo = item.ClaveVehiculo,
+                        total = ConcentradosMetodos.GetCrucesTurnosTypeVehiculo(Plazas, item.TipoVehiculoId, 3, FechaInicio)
+                    });
+                }
+
+
+                columns.Add("typeVehiculo");
+                columns.Add("total");
+
+                object Json = new { Turno1, Turno2, Turno3, columns };
+                return Json;
+
+
+            }
+            else
+            {
+                foreach (var item in TipodePago)
+                {
+                    Turno1.Add(new GraficaPieTurnoTypeVehiculo
+                    {
+                        nombreTurno = NombreTurnos[0],
+                        TypeVehiculo = item.ClaveVehiculo,
+                        total = ConcentradosMetodos.GetCrucesTurnosTypeVehiculo(Plazas, item.TipoVehiculoId, 1, FechaInicio, FechaFin)
+                    });
+
+                    Turno2.Add(new GraficaPieTurnoTypeVehiculo
+                    {
+                        nombreTurno = NombreTurnos[1],
+                        TypeVehiculo = item.ClaveVehiculo,
+                        total = ConcentradosMetodos.GetCrucesTurnosTypeVehiculo(Plazas, item.TipoVehiculoId, 2, FechaInicio, FechaFin)
+                    });
+
+                    Turno3.Add(new GraficaPieTurnoTypeVehiculo
+                    {
+                        nombreTurno = NombreTurnos[2],
+                        TypeVehiculo = item.ClaveVehiculo,
+                        total = ConcentradosMetodos.GetCrucesTurnosTypeVehiculo(Plazas, item.TipoVehiculoId, 3, FechaInicio, FechaFin)
+                    });
+
+
+                }
+
+                columns.Add("typeVehiculo");
+                columns.Add("total");
+
+                object Json = new { Turno1, Turno2, Turno3, columns};
+                return Json;
+            }
+
+        }
+
+
 
 
 
@@ -1001,6 +1797,24 @@ namespace Api.Clases
             public int CuerpoD { get; set; }
 
         }
+        private class GraficaPieTurno
+        {
+            public string nombreTurno { get; set; }            
+            public int total { get; set; }
+        }
+        private class GraficaPieTurnoTypePago
+        {
+            public string TypePago { get; set; }
+            public string nombreTurno { get; set; }            
+            public int total { get; set; }
+        }
+        private class GraficaPieTurnoTypeVehiculo
+        {
+            public string TypeVehiculo { get; set; }
+            public string nombreTurno { get; set; }
+            public int total { get; set; }
+        }
+
         private class GraficaTurnoCruce
         {
             public string NombrePlaza { get; set; }
@@ -1008,6 +1822,16 @@ namespace Api.Clases
             public int TurnoVespertino { get; set; }
             public int TurnoNocturno { get; set; }
 
+        }
+        private class GraficaPieTypePago
+        {
+            public string TypePago { get; set; }
+            public int total { get; set; }
+        }
+        private class GraficaPieTypeVehiculo
+        {
+            public string TypeVehiculo { get; set; }
+            public int total { get; set; }
         }
 
         private class GraficasTypePago
