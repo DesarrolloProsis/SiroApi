@@ -25,6 +25,7 @@ namespace Api.Controllers
         GraficasMetodos GraficasMetodos = new GraficasMetodos();
 
 
+        //METODOS PARA TODAS LAS PLAZAS
 
         [Route("Graficas/Full/{fechaInicio}/{fechaFin}")]
         [HttpGet]
@@ -52,6 +53,73 @@ namespace Api.Controllers
             return new JsonResult(Lista);
         }
 
+        [Route("Graficas/Turnos/{fechaInicio}/{fechaFin}")]
+        [HttpGet]
+        public JsonResult GetGraficasTurnosFull(string fechaInicio, string fechaFin)
+        {
+
+            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+
+            var Lista = GraficasMetodos.GraficaTurnosFull(FechaInicio, FechaFin);
+
+            return new JsonResult(Lista);
+        }
+
+        //METODOS PARA TODOS LOS CRUCES POR PLAZA
+
+        [Route("Graficas/TypePago/{plaza}/{fechaInicio}/{fechaFin}")]
+        [HttpGet]
+        public JsonResult GetPlazaTypePago(string plaza, string fechaInicio, string fechaFin)
+        {
+            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+
+            var Lista = GraficasMetodos.GraficaTramoTypePagoFull(plaza, FechaInicio, FechaFin);
+
+            return new JsonResult(Lista);
+
+        }
+
+        [Route("Graficas/TypeVehiculo/{plaza}/{fechaInicio}/{fechaFin}")]
+        [HttpGet]
+        public JsonResult GetPlazaTypeVehiculo(string plaza, string fechaInicio, string fechaFin)
+        {
+            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+
+            var Lista = GraficasMetodos.GraficaTramoTypeVehiculoFull(plaza, FechaInicio, FechaFin);
+
+            return new JsonResult(Lista);
+
+        }
+
+        //Metodo Pie Todos
+        [Route("Graficas/Pie/Todos/TypePago/{plaza}/{fechaInicio}/{fechaFin}")]
+        [HttpGet]
+        public JsonResult GetPlazaPieTypePagoFull(string plaza, string fechaInicio, string fechaFin)
+        {
+            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+
+            var Lista = GraficasMetodos.GraficaPieTypePagoFull(plaza, FechaInicio, FechaFin);
+
+            return new JsonResult(Lista);
+        }
+
+        [Route("Graficas/Pie/Todos/TypeVehiculo/{plaza}/{fechaInicio}/{fechaFin}")]
+        [HttpGet]
+        public JsonResult GraficaPieTypeVehiculoFull(string plaza, string fechaInicio, string fechaFin)
+        {
+            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+
+            var Lista = GraficasMetodos.GraficaPieTypeVehiculoFull(plaza, FechaInicio, FechaFin);
+
+            return new JsonResult(Lista);
+        }
+
+        //METODOS PARA LOS TRAMOS POR PLAZA 
         [Route("Graficas/Tramos/{plaza}/{fechaInicio}/{fechaFin}")]
         [HttpGet]
         public JsonResult GetGraficasTramos(string plaza, string fechaInicio, string fechaFin)
@@ -90,6 +158,43 @@ namespace Api.Controllers
 
         }
 
+        //Metodos Pie Tramos
+        [Route("Graficas/Pie/Tramos/TypePago/{plaza}/{fechaInicio}/{fechaFin}")]
+        [HttpGet]
+        public JsonResult GraficasPieTramoTypePago(string plaza, string fechaInicio, string fechaFin)
+        {
+            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+
+            var Lista = GraficasMetodos.GraficasPieTramoTypePago(plaza, FechaInicio, FechaFin);
+
+            return new JsonResult(Lista);
+        }
+
+        [Route("Graficas/Pie/Tramos/{plaza}/{fechaInicio}/{fechaFin}")]
+        [HttpGet]
+        public JsonResult GetPlazaPieTramo(string plaza, string fechaInicio, string fechaFin)
+        {
+            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+
+            var Lista = GraficasMetodos.GraficaPieTramo(plaza, FechaInicio, FechaFin);
+
+            return new JsonResult(Lista);
+        }
+
+        [Route("Graficas/Pie/Tramos/TypeVehiculo/{plaza}/{fechaInicio}/{fechaFin}")]
+        [HttpGet]
+        public JsonResult GraficasPieTramoTypeVehiculo(string plaza, string fechaInicio, string fechaFin)
+        {
+            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
+
+            var Lista = GraficasMetodos.GraficasPieTramoTypeVehiculo(plaza, FechaInicio, FechaFin);
+            return new JsonResult(Lista);
+        }
+
+        //METODOS PARA LOS TURNOS POR PLAZA 
         [Route("Graficas/Turnos/TypePago/{plaza}/{fechaInicio}/{fechaFin}")]
         [HttpGet]
         public JsonResult GetGraficasTurnoTypePago(string plaza, string fechaInicio, string fechaFin)
@@ -114,20 +219,6 @@ namespace Api.Controllers
             return new JsonResult(Lista);
         }
 
-
-        [Route("Graficas/Turnos/{fechaInicio}/{fechaFin}")]
-        [HttpGet]
-        public JsonResult GetGraficasTurnosFull(string fechaInicio, string fechaFin)
-        {
-
-            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-
-            var Lista = GraficasMetodos.GraficaTurnosFull(FechaInicio, FechaFin);
-
-            return new JsonResult(Lista);
-        }
-
         [Route("Graficas/Turnos/{plaza}/{fechaInicio}/{fechaFin}")]
         [HttpGet]
         public JsonResult GetGraficasTurnosFull(string plaza, string fechaInicio, string fechaFin)
@@ -141,44 +232,7 @@ namespace Api.Controllers
             return new JsonResult(Lista);
         }
 
-        [Route("Graficas/TypePago/{plaza}/{fechaInicio}/{fechaFin}")]
-        [HttpGet]
-        public JsonResult GePlazaTypePago(string plaza, string fechaInicio, string fechaFin)
-        {
-            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-
-            var Lista = GraficasMetodos.GraficaTramoTypePagoFull(plaza, FechaInicio, FechaFin);
-
-            return new JsonResult(Lista);
-
-        }
-
-        [Route("Graficas/TypeVehiculo/{plaza}/{fechaInicio}/{fechaFin}")]
-        [HttpGet]
-        public JsonResult GePlazaTypeVehiculo(string plaza, string fechaInicio, string fechaFin)
-        {
-            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-
-            var Lista = GraficasMetodos.GraficaTramoTypeVehiculoFull(plaza, FechaInicio, FechaFin);
-
-            return new JsonResult(Lista);
-
-        }
-
-        [Route("Graficas/Pie/Tramos/{plaza}/{fechaInicio}/{fechaFin}")]
-        [HttpGet]
-        public JsonResult GetPlazaPieTramo(string plaza, string fechaInicio, string fechaFin)
-        {
-            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-
-            var Lista = GraficasMetodos.GraficaPieTramo(plaza, FechaInicio, FechaFin);
-
-            return new JsonResult(Lista);
-        }
-
+        //Metodos Pie Turnos 
 
         [Route("Graficas/Pie/Turnos/{plaza}/{fechaInicio}/{fechaFin}")]
         [HttpGet]
@@ -189,60 +243,6 @@ namespace Api.Controllers
 
             var Lista = GraficasMetodos.GraficaPieTurnos(plaza, FechaInicio, FechaFin);
 
-            return new JsonResult(Lista);
-        }
-
-        [Route("Graficas/Pie/Todos/TypePago/{plaza}/{fechaInicio}/{fechaFin}")]
-        [HttpGet]
-        public JsonResult GetPlazaPieTypePagoFull(string plaza, string fechaInicio, string fechaFin)
-        {
-            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-
-            var Lista = GraficasMetodos.GraficaPieTypePagoFull(plaza, FechaInicio, FechaFin);
-
-            return new JsonResult(Lista);
-        }
-
-        [Route("Graficas/Pie/Todos/TypeVehiculo/{plaza}/{fechaInicio}/{fechaFin}")]
-        [HttpGet]
-        public JsonResult GraficaPieTypeVehiculoFull(string plaza, string fechaInicio, string fechaFin)
-        {
-            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-
-            var Lista = GraficasMetodos.GraficaPieTypeVehiculoFull(plaza, FechaInicio, FechaFin);
-
-            return new JsonResult(Lista);
-        }
-
-
-
-
-
-        [Route("Graficas/Pie/Tramos/TypePago/{plaza}/{fechaInicio}/{fechaFin}")]
-        [HttpGet]
-        public JsonResult GraficasPieTramoTypePago(string plaza, string fechaInicio, string fechaFin)
-        {
-            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-
-            var Lista = GraficasMetodos.GraficasPieTramoTypePago(plaza, FechaInicio, FechaFin);
-            
-            
-           
-
-            return new JsonResult(Lista);
-        }
-
-        [Route("Graficas/Pie/Tramos/TypeVehiculo/{plaza}/{fechaInicio}/{fechaFin}")]
-        [HttpGet]
-        public JsonResult GraficasPieTramoTypeVehiculo(string plaza, string fechaInicio, string fechaFin)
-        {
-            DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-            DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
-
-            var Lista = GraficasMetodos.GraficasPieTramoTypeVehiculo(plaza, FechaInicio, FechaFin);
             return new JsonResult(Lista);
         }
 
@@ -271,7 +271,7 @@ namespace Api.Controllers
         }
 
 
-
+  
 
 
     }
