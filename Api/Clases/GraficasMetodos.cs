@@ -1,6 +1,8 @@
 ﻿using Api.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -61,8 +63,9 @@ namespace Api.Clases
             foreach (var item in Plazas)
             {
 
-
-                var Tramos = TramosMetodos.GetTramos(item.NumeroPlaza);
+              
+                    var Tramos = TramosMetodos.GetTramos(item.NumeroPlaza);
+               
                 int[] Cuerpos = new int[4];
                 for (int i = 0; i < Tramos.Count(); i++)
                 {
@@ -87,6 +90,7 @@ namespace Api.Clases
                     CuerpoD = CuerpoD
 
                 });
+               
 
             }
             object Json = new { columns, Lista };
@@ -147,7 +151,8 @@ namespace Api.Clases
         //METODOS UNA PLAZA TODOS
         public object GraficaPieTypePagoFull(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
         {
-            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            //var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Plazas = nombrePlaza;
             var TipodePago = db.TipoPago.ToList();
             List<GraficaPieTypePago> Lista = new List<GraficaPieTypePago>();
             List<string> columns = new List<string>();
@@ -197,7 +202,8 @@ namespace Api.Clases
         }
         public object GraficaPieTypeVehiculoFull(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
         {
-            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            //var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Plazas = nombrePlaza;
             var TipodeVehiculo = db.TipoVehiculo.ToList();
             List<GraficaPieTypeVehiculo> Lista = new List<GraficaPieTypeVehiculo>();
             List<string> columns = new List<string>();
@@ -249,7 +255,8 @@ namespace Api.Clases
         {
             var TiposdePago = db.TipoPago.ToList();
 
-            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            //var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Plazas = nombrePlaza;
             List<GraficaPieTypePago> Lista = new List<GraficaPieTypePago>();
             List<string> columns = new List<string>();
 
@@ -290,7 +297,8 @@ namespace Api.Clases
         {
             var TiposdePago = db.TipoVehiculo.ToList();
 
-            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            //var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Plazas = nombrePlaza;
             List<GraficaPieTypeVehiculo> Lista = new List<GraficaPieTypeVehiculo>();
             List<string> columns = new List<string>();
 
@@ -331,7 +339,8 @@ namespace Api.Clases
         public object GraficaTramos(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
         {
 
-            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            //var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Plazas = nombrePlaza;
             List<GraficaTramoCruce> Lista = new List<GraficaTramoCruce>();
             string[] colns = { "nombrePlaza", "cuerpoA", "cuerpoB", "cuerpoC", "cuerpoD" };
             List<string> columns = new List<string>();
@@ -420,7 +429,8 @@ namespace Api.Clases
         
         public object GraficaTramoTypePagoFull(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
         {
-            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            //var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Plazas = nombrePlaza;
             var TypePagos = db.TipoPago.ToList();
             List<string> columns = new List<string>();
             List<GraficasTypePago> Lista = new List<GraficasTypePago>();
@@ -512,7 +522,8 @@ namespace Api.Clases
         }
         public object GraficaTramoTypeVehiculoFull(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
         {
-            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            //var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Plazas = nombrePlaza;
             var TypePagos = db.TipoPago.ToList();
             List<string> columns = new List<string>();
             List<GraficasTypeVehiculo> Lista = new List<GraficasTypeVehiculo>();
@@ -626,7 +637,8 @@ namespace Api.Clases
 
         public object GraficaTramoTypePago(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
         {
-            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            //var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Plazas = nombrePlaza;
             var Tramos = TramosMetodos.GetTramos(Plazas);
             List<string> columnsOld = new List<string>();
             List<GraficasTypePagoT> Lista = new List<GraficasTypePagoT>();
@@ -732,7 +744,8 @@ namespace Api.Clases
         }
         public object GraficaTramoTypeVehiculo(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
         {
-            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            //var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Plazas = nombrePlaza;
             var TypePagos = db.TipoPago.ToList();
             var Tramos = TramosMetodos.GetTramos(Plazas);
             List<string> columnsOld = new List<string>();
@@ -864,7 +877,8 @@ namespace Api.Clases
         public object GraficasPieTramoTypePago(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
         {
             var TiposdePago = db.TipoPago.ToList();
-            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            //var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Plazas = nombrePlaza;
             var Tramos = TramosMetodos.GetTramosNumeroPlaza(Plazas);
             List<GraficaPieTypePago> ListaA = new List<GraficaPieTypePago>();
             List<GraficaPieTypePago> ListaB = new List<GraficaPieTypePago>();
@@ -911,21 +925,21 @@ namespace Api.Clases
                     foreach (var item in TiposdePago)
                     {
 
-                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio, FechaFin) > 0)
                         {
                             ListaA.Add(new GraficaPieTypePago
                             {
                                 TypePago = item.NombrePago,
-                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio),
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio, FechaFin),
                             });
                         }
 
-                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio, FechaFin) > 0)
                         {
                             ListaB.Add(new GraficaPieTypePago
                             {
                                 TypePago = item.NombrePago,
-                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio),
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio, FechaFin),
                             });
                         }
                     }
@@ -996,39 +1010,39 @@ namespace Api.Clases
                     foreach (var item in TiposdePago)
                     {
 
-                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio, FechaFin) > 0)
                         {
                             ListaA.Add(new GraficaPieTypePago
                             {
                                 TypePago = item.NombrePago,
-                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio),
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoPagoId, FechaInicio, FechaFin),
                             });
                         }
 
-                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio, FechaFin) > 0)
                         {
                             ListaB.Add(new GraficaPieTypePago
                             {
                                 TypePago = item.NombrePago,
-                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio),
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoPagoId, FechaInicio, FechaFin),
                             });
                         }
 
-                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[2].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[2].IdGare, item.TipoPagoId, FechaInicio, FechaFin) > 0)
                         {
                             ListaC.Add(new GraficaPieTypePago
                             {
                                 TypePago = item.NombrePago,
-                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[2].IdGare, item.TipoPagoId, FechaInicio),
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[2].IdGare, item.TipoPagoId, FechaInicio, FechaFin),
                             });
                         }
 
-                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[3].IdGare, item.TipoPagoId, FechaInicio) > 0)
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[3].IdGare, item.TipoPagoId, FechaInicio, FechaFin) > 0)
                         {
                             ListaD.Add(new GraficaPieTypePago
                             {
                                 TypePago = item.NombrePago,
-                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[3].IdGare, item.TipoPagoId, FechaInicio),
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[3].IdGare, item.TipoPagoId, FechaInicio, FechaFin),
                             });
                         }
                     }
@@ -1047,7 +1061,8 @@ namespace Api.Clases
         public object GraficasPieTramoTypeVehiculo(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
         {
             var TiposdeVehiculo = db.TipoVehiculo.ToList();
-            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            //var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Plazas = nombrePlaza;
             var Tramos = TramosMetodos.GetTramosNumeroPlaza(Plazas);
             List<GraficaPieTypeVehiculo> ListaA = new List<GraficaPieTypeVehiculo>();
             List<GraficaPieTypeVehiculo> ListaB = new List<GraficaPieTypeVehiculo>();
@@ -1089,22 +1104,22 @@ namespace Api.Clases
                 {
                     foreach (var item in TiposdeVehiculo)
                     {
-                        if (ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        if (ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio, FechaFin) > 0)
                         {
                             ListaA.Add(new GraficaPieTypeVehiculo
                             {
                                 TypeVehiculo = item.ClaveVehiculo,
-                                total = ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio),
+                                total = ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio, FechaFin),
                             });
                         }
 
 
-                        if (ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        if (ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio, FechaFin) > 0)
                         {
                             ListaB.Add(new GraficaPieTypeVehiculo
                             {
                                 TypeVehiculo = item.ClaveVehiculo,
-                                total = ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio),
+                                total = ConcentradosMetodos.GetCrucesTramoTypeVehiculo(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio, FechaFin),
                             });
                         }
                     }
@@ -1173,41 +1188,41 @@ namespace Api.Clases
                 {
                     foreach (var item in TiposdeVehiculo)
                     {
-                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio, FechaFin) > 0)
                         {
                             ListaA.Add(new GraficaPieTypeVehiculo
                             {
                                 TypeVehiculo = item.ClaveVehiculo,
-                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio),
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[0].IdGare, item.TipoVehiculoId, FechaInicio, FechaFin),
                             });
                         }
 
 
-                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio, FechaFin) > 0)
                         {
                             ListaB.Add(new GraficaPieTypeVehiculo
                             {
                                 TypeVehiculo = item.ClaveVehiculo,
-                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio),
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[1].IdGare, item.TipoVehiculoId, FechaInicio, FechaFin),
                             });
                         }
 
-                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[2].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[2].IdGare, item.TipoVehiculoId, FechaInicio, FechaFin) > 0)
                         {
 
                             ListaC.Add(new GraficaPieTypeVehiculo
                             {
                                 TypeVehiculo = item.ClaveVehiculo,
-                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[2].IdGare, item.TipoVehiculoId, FechaInicio),
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[2].IdGare, item.TipoVehiculoId, FechaInicio, FechaFin),
                             });
                         }
 
-                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[3].IdGare, item.TipoVehiculoId, FechaInicio) > 0)
+                        if (ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[3].IdGare, item.TipoVehiculoId, FechaInicio, FechaFin) > 0)
                         {
                             ListaD.Add(new GraficaPieTypeVehiculo
                             {
                                 TypeVehiculo = item.ClaveVehiculo,
-                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[3].IdGare, item.TipoVehiculoId, FechaInicio),
+                                total = ConcentradosMetodos.GetCrucesTramoTypePago(Tramos[3].IdGare, item.TipoVehiculoId, FechaInicio, FechaFin),
                             });
                         }
                     }
@@ -1224,7 +1239,7 @@ namespace Api.Clases
         }
         public object GraficaPieTramo(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
         {
-            var Tramos = TramosMetodos.GetTramosNumeroPlaza(PlazasMetodos.ConvertNombrePlaza(nombrePlaza));
+            var Tramos = TramosMetodos.GetTramosNumeroPlaza(nombrePlaza);
 
             List<GraficaCruce> Lista = new List<GraficaCruce>();
             List<string> columns = new List<string>();
@@ -1268,8 +1283,8 @@ namespace Api.Clases
         public object GraficaTurnos(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
         {
 
-            var NumeroPlazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
-
+            //var NumeroPlazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var NumeroPlazas = nombrePlaza;
             var Turnos = db.Turnos.Where(x => x.TurnoId != 0).ToList();
 
 
@@ -1312,8 +1327,8 @@ namespace Api.Clases
         public object GraficasTurnosTypePago(string Plaza, DateTime FechaInicio, DateTime FechaFin)
         {
 
-            var NumeroPlaza = PlazasMetodos.ConvertNombrePlaza(Plaza);
-
+            //var NumeroPlaza = PlazasMetodos.ConvertNombrePlaza(Plaza);
+            var NumeroPlaza = Plaza;
             List<GraficasTypePagoT> Lista = new List<GraficasTypePagoT>();
             List<string> columnsOld = new List<string>();
             string[] NombreTurnos = new[] { "turnoMatutino", "turnoVespertino", "turnoNocturno" };
@@ -1427,8 +1442,8 @@ namespace Api.Clases
         public object GraficasTurnosTypeVehiculo(string Plaza, DateTime FechaInicio, DateTime FechaFin)
         {
 
-            var NumeroPlaza = PlazasMetodos.ConvertNombrePlaza(Plaza);
-
+            //var NumeroPlaza = PlazasMetodos.ConvertNombrePlaza(Plaza);
+            var NumeroPlaza = Plaza;
             List<GraficasTypeVehiculoT> Lista = new List<GraficasTypeVehiculoT>();
             List<string> columnsOld = new List<string>();
             string[] NombreTurnos = new[] { "turnoMatutino", "turnoVespertino", "turnoNocturno" };
@@ -1569,7 +1584,8 @@ namespace Api.Clases
         public object GraficaPieTurnos(string nombrePlaza, DateTime FechaInicio, DateTime FechaFin)
         {
 
-            var Plaza = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            //var Plaza = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Plaza = nombrePlaza;
             string[] columns = new[] { "nombreTurno", "total" };
             string[] nombres = new[] { "nombrePlaza", "turnoMatutino", "turnoVespertino", "turnoNocturno" };
 
@@ -1609,8 +1625,8 @@ namespace Api.Clases
             List<GraficaPieTurnoTypePago> Turno3 = new List<GraficaPieTurnoTypePago>();
             List<string> columns = new List<string>();
             string[] NombreTurnos = new[] { "turnoMatutino", "turnoVespertino", "turnoNocturno" };
-            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
-
+            //var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Plazas = nombrePlaza;
             var TipodePago = db.TipoPago.ToList();
 
             if(FechaInicio == FechaFin)
@@ -1718,8 +1734,8 @@ namespace Api.Clases
             List<string> columns = new List<string>();
      
             string[] NombreTurnos = new[] { "turnoMatutino", "turnoVespertino", "turnoNocturno" };
-            var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
-
+            //var Plazas = PlazasMetodos.ConvertNombrePlaza(nombrePlaza);
+            var Plazas = nombrePlaza;
             var TipodePago = db.TipoVehiculo.ToList();
 
             if (FechaInicio == FechaFin)
@@ -1795,7 +1811,7 @@ namespace Api.Clases
             }
 
         }
-
+    
         private class GraficaCruce
         {
             public string NombrePlaza { get; set; }

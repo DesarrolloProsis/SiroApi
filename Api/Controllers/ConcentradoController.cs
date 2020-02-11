@@ -19,19 +19,19 @@ namespace Api.Controllers
     public class ConcentradoController : ControllerBase
     {
 
-        PlazasMetodos PlazaMetodos = new PlazasMetodos();
-        TramosMetodos TramoMetodos = new TramosMetodos();
-        ConcentradoMetodos ConcentradoMetodos = new ConcentradoMetodos();
+  
         GraficasMetodos GraficasMetodos = new GraficasMetodos();
 
 
         //METODOS PARA TODAS LAS PLAZAS
 
+        //Plazas por Dia.
+
         [Route("Graficas/Full/{fechaInicio}/{fechaFin}")]
         [HttpGet]
         public JsonResult GetGraficasFull(string fechaInicio, string fechaFin)
         {
-
+            
             DateTime FechaInicio = DateTime.ParseExact(fechaInicio, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
             DateTime FechaFin = DateTime.ParseExact(fechaFin, "yyyy-MM-dd", CultureInfo.InvariantCulture).Date;
 
@@ -39,7 +39,7 @@ namespace Api.Controllers
 
             return new JsonResult(Lista);
         }
-
+        //Plazas por Tramo.
         [Route("Graficas/Tramos/{fechaInicio}/{fechaFin}")]
         [HttpGet]
         public JsonResult GetGraficasTramosFull(string fechaInicio, string fechaFin)
@@ -52,7 +52,7 @@ namespace Api.Controllers
 
             return new JsonResult(Lista);
         }
-
+        //Plazas por Turno.
         [Route("Graficas/Turnos/{fechaInicio}/{fechaFin}")]
         [HttpGet]
         public JsonResult GetGraficasTurnosFull(string fechaInicio, string fechaFin)

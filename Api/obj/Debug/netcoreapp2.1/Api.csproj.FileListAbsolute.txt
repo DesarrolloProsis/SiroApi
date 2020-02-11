@@ -42,3 +42,19 @@ C:\Users\Desarrollo3\Desktop\ApiSiro\ApiSiro\SiroApi\Api\obj\Debug\netcoreapp2.1
 C:\Users\Desarrollo3\Desktop\ApiSiro\ApiSiro\SiroApi\Api\bin\Debug\netcoreapp2.1\appsettings.Development.json
 C:\Users\Desarrollo3\Desktop\ApiSiro\ApiSiro\SiroApi\Api\bin\Debug\netcoreapp2.1\appsettings.json
 C:\Users\Desarrollo3\Desktop\ApiSiro\ApiSiro\SiroApi\Api\bin\Debug\netcoreapp2.1\Properties\launchSettings.json
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\obj\Debug\netcoreapp2.1\Api.RazorAssemblyInfo.cache
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\obj\Debug\netcoreapp2.1\Api.RazorAssemblyInfo.cs
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\obj\Debug\netcoreapp2.1\Api.AssemblyInfoInputs.cache
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\obj\Debug\netcoreapp2.1\Api.AssemblyInfo.cs
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\obj\Debug\netcoreapp2.1\Api.dll
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\obj\Debug\netcoreapp2.1\Api.pdb
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\bin\Debug\netcoreapp2.1\appsettings.Development.json
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\bin\Debug\netcoreapp2.1\Properties\launchSettings.json
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\bin\Debug\netcoreapp2.1\appsettings.json
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\bin\Debug\netcoreapp2.1\Api.deps.json
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\bin\Debug\netcoreapp2.1\Api.runtimeconfig.json
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\bin\Debug\netcoreapp2.1\Api.runtimeconfig.dev.json
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\bin\Debug\netcoreapp2.1\Api.dll
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\bin\Debug\netcoreapp2.1\Api.pdb
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\obj\Debug\netcoreapp2.1\Api.RazorTargetAssemblyInfo.cache
+C:\Users\Desarrollo3\Desktop\PROYECTOS EN CURSO\SiroApi\Api\obj\Debug\netcoreapp2.1\Api.csprojAssemblyReference.cache

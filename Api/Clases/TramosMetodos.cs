@@ -37,7 +37,7 @@ namespace Api.Clases
                               IdGare = t.IdGare,
                               NumeroPlaza = t.NumeroPlazaCapufe,
                               NombreTramo = t.NombreTramo,
-                              IpVideo = t.IpVideo
+                              
 
                           }).ToList();
 
@@ -56,8 +56,7 @@ namespace Api.Clases
                               {
                                   IdGare = t.IdGare,
                                   NumeroPlaza = t.NumeroPlazaCapufe,
-                                  NombreTramo = t.NombreTramo,
-                                  IpVideo = t.IpVideo
+                                  NombreTramo = t.NombreTramo,                                  
 
                               }).ToList();
 
@@ -72,8 +71,7 @@ namespace Api.Clases
                               {
                                   IdGare = t.IdGare,
                                   NumeroPlaza = t.NumeroPlazaCapufe,
-                                  NombreTramo = t.NombreTramo,
-                                  IpVideo = t.IpVideo
+                                  NombreTramo = t.NombreTramo,                                  
 
                               }).ToList();
 
@@ -99,7 +97,7 @@ namespace Api.Clases
                               IdGare = t.IdGare,
                               NumeroPlaza = t.NumeroPlazaCapufe,
                               NombreTramo = t.NombreTramo,
-                              IpVideo = t.IpVideo
+                              
 
                           }).ToList();
 
@@ -237,7 +235,7 @@ namespace Api.Clases
         public int IdGare { get; set; }
         public string NumeroPlaza { get; set; }
         public string NombreTramo { get; set; }
-        public string IpVideo { get; set; }
+        
     }
 
     class TramosPlazas
